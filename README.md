@@ -28,7 +28,7 @@ escolher este repositório e deixar os campos assim:
    `agatha_leads`, `pagina = espera`) com nome, e-mail, WhatsApp e as UTMs da URL. Os números
    aparecem no painel: https://asfit-painel-leads.netlify.app (pasta `../asfit-painel-leads`).
    No fim do `index.html` ainda há duas variáveis:
-   - `LINK_DO_GRUPO`: **falta preencher.** É o convite do Grupo de Espera no WhatsApp. Com ele,
+   - `LINK_DO_GRUPO`: preenchido com o convite atual (https://chat.whatsapp.com/H7Us89S3qkTFPKZ9K9Mg6F). É o convite do Grupo de Espera no WhatsApp. Com ele,
      a pessoa vai direto para o grupo depois do cadastro; vazio, ela só vê a mensagem de sucesso.
    - `ENVIAR_PARA`: opcional. Um segundo endereço (webhook) que também recebe o cadastro em
      `multipart/form-data`.
