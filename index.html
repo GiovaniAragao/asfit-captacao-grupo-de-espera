@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grupo de Espera · Asfit</title>
+<meta name="description" content="O lançamento da Asfit é dia 11/11, na live oficial. Entre no Grupo de Espera e receba o link das inscrições antes de todo mundo.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F7F3E8">
+<meta name="color-scheme" content="light">
+<!-- Na Netlify, trocar o endereço do og:image e do og:url pelo domínio novo -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Grupo de Espera · Asfit">
+<meta property="og:description" content="O lançamento da Asfit é dia 11/11, na live oficial. Entre no Grupo de Espera e receba o link das inscrições antes de todo mundo.">
+<meta property="og:url" content="https://nova-asfit.pages.dev/">
+<!-- Arte da prévia do link: fonte em ../captacao-nova-asfit-previa-link.html. Ao trocar a arte, trocar também o nome do arquivo (o WhatsApp guarda a prévia antiga) -->
+<meta property="og:image" content="https://nova-asfit.pages.dev/img/compartilhar-asfit.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Agatha Sá no pôr do sol com a logo da Asfit. Grupo de Espera, save the date 11/11">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preload" href="fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  /* Manual da marca (Carol Guerra, 06/10/2026): Mundial Regular nos títulos e Mundial Thin no texto corrido.
+     A Mundial que temos é demo e sem acento, então vai a Figtree: 500 tem o peso da Mundial Regular e 300 faz o papel da Thin. */
+  @font-face {
+    font-family: "Figtree";
+    src: url(fonts/figtree-latin.woff2) format("woff2");
+    font-weight: 300 900;
+    font-style: normal;
+    font-display: block;
+  }
+
+  :root {
+    /* Paleta do Projeto de Marca da Asfit (proposta 02), a mesma dos mockups do app */
+    --creme: #F7F3E8;
+    --papel: #FFFCF5;
+    --vinho: #873A4A;
+    --vinho-escuro: #6E2E3C;
+    --amarelo: #FEE179;
+    --terracota: #CA6839;
+    --marrom: #623B1E;
+    --marrom-apoio: #76543A;
+    --creme-apoio: #ECE0D8;
+    --linha: rgba(98, 59, 30, .16);
+    --erro: #A63D27;
+    --fonte: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    /* Cantos: pílula no que se toca (botão, selo), 14px nos campos, 20px nas caixas, 28px em foto e vídeo */
+    --raio-campo: 14px;
+    --raio-caixa: 20px;
+    --raio-midia: 28px;
+    --mola: cubic-bezier(.16, 1, .3, 1);
+    --largura: 1120px;
+    --lateral: 20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--creme);
+    color: var(--marrom);
+    font-family: var(--fonte);
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  img, video { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3, p, ul, figure, blockquote { margin: 0; padding: 0; }
+  ul { list-style: none; }
+  h1, h2, h3 { font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  strong { font-weight: 600; }
+  a, button, input, video { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  :focus-visible { outline: 3px solid var(--terracota); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .pular { position: absolute; left: 12px; top: -60px; z-index: 10; padding: 10px 16px; border-radius: 999px; background: var(--vinho); color: var(--creme); font-weight: 600; text-decoration: none; }
+  .pular:focus { top: 12px; }
+  .app :focus-visible, .bio :focus-visible, .rodape :focus-visible { outline-color: var(--amarelo); }
+  .wrap { width: min(var(--largura), 100% - 2 * var(--lateral)); margin-inline: auto; }
+
+  /* Botões como os do app: pílula, texto em caixa normal. Vinho no creme, amarelo no vinho */
+  .botao {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 58px; padding: 0 34px; border: 0; border-radius: 999px;
+    background: var(--vinho); color: var(--creme);
+    font: inherit; font-size: 17px; font-weight: 600; letter-spacing: 0; text-align: center;
+    text-decoration: none; cursor: pointer;
+    box-shadow: 0 16px 30px -18px rgba(135, 58, 74, .95);
+    transition: transform .18s ease, background-color .18s ease;
+  }
+  .botao:hover { background: #7A3242; }
+  .botao:active { transform: scale(.98); }
+  .botao[disabled] { opacity: .7; cursor: progress; transform: none; }
+  .botao--amarelo { background: var(--amarelo); color: var(--vinho); box-shadow: 0 18px 34px -20px rgba(40, 10, 18, .7); }
+  .botao--amarelo:hover { background: #FFE88F; }
+
+  /* ===== Topo ===== */
+  .topo { display: flex; justify-content: center; padding: 22px var(--lateral) 6px; }
+  .topo img { width: 168px; }
+
+  /* ===== DOBRA 1 — Promessa e cadastro ===== */
+  .hero { position: relative; overflow: hidden; }
+  .hero__grade { display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; padding-top: 16px; }
+  .hero__texto { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+  .grupo {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 4px 16px 4px 4px; border-radius: 999px; background: var(--papel); border: 1px solid var(--linha);
+    font-size: 14px; font-weight: 500; color: var(--vinho);
+  }
+  /* ícone da Asfit: símbolo off-white no bordô, combinação do manual (p18) */
+  .grupo img { width: 30px; height: 30px; padding: 0 6px; border-radius: 50%; background: var(--vinho); object-fit: contain; }
+  .hero h1 { font-size: clamp(28px, 7.4vw, 48px); color: var(--marrom); max-width: 16em; }
+  .hero .sub { font-size: 16.5px; line-height: 1.5; color: var(--marrom-apoio); max-width: 31em; }
+
+  /* Formulário com rótulo que sobe quando a pessoa digita */
+  .form { width: 100%; max-width: 540px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 6px; scroll-margin-top: 24px; }
+  .campo { position: relative; text-align: left; }
+  .campo input {
+    width: 100%; height: 58px; padding: 22px 18px 6px;
+    border: 1.5px solid rgba(98, 59, 30, .22); border-radius: var(--raio-campo); background: var(--papel);
+    font: inherit; font-size: 16px; font-weight: 400; color: var(--marrom);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .campo label {
+    position: absolute; left: 19px; top: 18px; max-width: calc(100% - 38px);
+    font-size: 16px; font-weight: 400; line-height: 1.4; color: var(--marrom-apoio); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    pointer-events: none; transform-origin: left top; transition: transform .15s ease, color .15s ease;
+  }
+  .campo input:focus { outline: none; border-color: var(--vinho); box-shadow: 0 0 0 4px rgba(135, 58, 74, .14); }
+  .campo input:focus + label, .campo input:not(:placeholder-shown) + label { transform: translateY(-10px) scale(.76); color: var(--vinho); }
+  .campo input[aria-invalid="true"] { border-color: var(--erro); }
+  .erro { display: block; padding: 4px 0 0 6px; font-size: 13.5px; font-weight: 500; color: var(--erro); }
+  .erro:empty { display: none; }
+  .form .botao { width: 100%; margin-top: 4px; }
+  .micro { font-size: 14px; font-weight: 400; color: var(--marrom-apoio); text-align: center; }
+  .sucesso { grid-column: 1 / -1; padding: 26px 20px; border-radius: var(--raio-caixa); background: var(--papel); border: 1px solid var(--linha); text-align: center; }
+  .sucesso strong { display: block; font-size: 26px; font-weight: 500; letter-spacing: -.02em; color: var(--vinho); margin-bottom: 4px; }
+  .sucesso p { color: var(--marrom-apoio); }
+
+  /* Foto da Agatha no pôr do sol (post do Instagram, com a logo da Asfit no céu), com o selo 11/11 de adesivo */
+  .hero { padding-bottom: 56px; }
+  .hero__foto { position: relative; width: min(340px, 86%); margin-inline: auto; }
+  .hero__foto img {
+    width: 100%; aspect-ratio: 853 / 1066; object-fit: cover; border-radius: var(--raio-midia);
+    box-shadow: 0 34px 60px -32px rgba(98, 59, 30, .55);
+  }
+  .selo {
+    width: 96px; aspect-ratio: 1; border-radius: 50%; background: var(--terracota); color: var(--creme);
+    display: grid; place-content: center; justify-items: center; gap: 1px; text-align: center;
+    box-shadow: 0 16px 30px -18px rgba(98, 59, 30, .8);
+  }
+  .selo span { font-size: 8.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; line-height: 1.2; }
+  .selo strong { font-size: 30px; font-weight: 500; letter-spacing: -.02em; line-height: 1; }
+  .hero__foto .selo { position: absolute; z-index: 2; left: -9%; bottom: 7%; }
+
+  /* ===== DOBRA 2 — A Asfit por dentro ===== */
+  .app { background: var(--vinho); color: var(--creme); padding: 72px 0 80px; }
+  .cabeca { max-width: 780px; margin-inline: auto; display: grid; gap: 16px; text-align: center; }
+  .cabeca h2 { font-size: clamp(28px, 6.6vw, 44px); color: var(--creme); }
+  .cabeca p { font-size: clamp(16.5px, 1.9vw, 19px); color: var(--creme-apoio); }
+
+  .app__grade { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 44px; }
+  .video { position: relative; width: min(300px, 78vw); margin-inline: auto; }
+  .video video {
+    width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: var(--raio-midia); background: var(--vinho-escuro);
+    box-shadow: 0 40px 60px -34px rgba(30, 6, 12, .85), 0 0 0 1px rgba(247, 243, 232, .14);
+    cursor: pointer;
+  }
+  .video__pausa {
+    position: absolute; left: 12px; bottom: 12px; width: 44px; height: 44px;
+    display: grid; place-items: center; border: 0; border-radius: 50%;
+    background: rgba(40, 12, 20, .72); color: var(--creme); cursor: pointer;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .video__pausa svg { width: 18px; height: 18px; }
+  .video__pausa[data-estado="tocando"] .icone-tocar, .video__pausa[data-estado="parado"] .icone-pausar { display: none; }
+  .video__som {
+    position: absolute; right: 12px; bottom: 12px;
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 14px;
+    border: 0; border-radius: 999px; background: rgba(40, 12, 20, .72); color: var(--creme);
+    font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .video__som svg { width: 18px; height: 18px; flex: none; }
+  .video__som[aria-pressed="true"] .icone-mudo, .video__som[aria-pressed="false"] .icone-som { display: none; }
+  .video__som:hover, .video__pausa:hover { background: rgba(40, 12, 20, .9); }
+
+  .recursos { display: grid; gap: 26px; }
+  .recurso { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 14px; row-gap: 6px; align-items: start; }
+  .recurso img { grid-row: 1 / span 2; width: 44px; margin-top: 4px; }
+  .recurso h3 { font-size: 21px; line-height: 1.2; color: var(--creme); }
+  .recurso p { font-size: 16px; line-height: 1.5; color: var(--creme-apoio); }
+  .recurso--destaque h3 { color: var(--amarelo); }
+  .extra { max-width: 600px; margin: 40px auto 0; text-align: center; font-size: 17px; color: var(--creme-apoio); }
+  .extra strong { color: var(--creme); }
+  .centro { display: flex; justify-content: center; margin-top: 26px; }
+
+  /* ===== DOBRA 4 — Agatha, no bordô (fecha a página) ===== */
+  .bio { background: var(--vinho); color: var(--creme); padding: 80px 0; }
+  .bio__grade { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; align-items: center; }
+  .bio__foto { width: min(420px, 100%); margin-inline: auto; }
+  .bio__foto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 22%; border-radius: var(--raio-midia); }
+  .bio__texto { display: grid; gap: 16px; }
+  .bio h2 { font-size: clamp(42px, 8vw, 62px); color: var(--creme); }
+  .bio p { color: var(--creme-apoio); }
+  .citacao { display: flex; gap: 14px; align-items: flex-start; margin-top: 6px; color: var(--amarelo); font-size: 20px; font-weight: 500; line-height: 1.4; letter-spacing: -.01em; }
+  .citacao img { width: 46px; flex: none; margin-top: 3px; }
+  .bio .citacao p { color: var(--amarelo); font-size: 20px; font-weight: 500; }
+  .numeros { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 6px; border-top: 1px solid rgba(247, 243, 232, .22); }
+  .numeros li { display: grid; align-content: start; gap: 2px; padding: 16px 10px 0 0; font-size: 14px; font-weight: 400; line-height: 1.35; color: var(--creme-apoio); }
+  .numeros li + li { padding-left: 14px; border-left: 1px solid rgba(247, 243, 232, .22); }
+  .numeros strong { font-size: 22px; font-weight: 500; letter-spacing: -.02em; color: var(--creme); }
+  .bio .botao { justify-self: start; margin-top: 14px; }
+
+  /* ===== DOBRA 3 — Abertura, bônus e chamada final, no off-white ===== */
+  .final { padding: 76px 0 72px; text-align: center; }
+  .final__caixa { max-width: 1000px; margin-inline: auto; display: grid; justify-items: center; gap: 18px; }
+  .final .selo { margin-bottom: 6px; }
+  .final h2 { font-size: clamp(30px, 6.8vw, 50px); color: var(--marrom); max-width: 15em; }
+  .final p { font-size: 17.5px; color: var(--marrom-apoio); max-width: 36em; }
+  .final p strong { color: var(--marrom); }
+  /* Um card por bônus: rótulo, título em cima da animação e um parágrafo curto embaixo */
+  .bonus { width: 100%; max-width: 480px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin: 10px 0 6px; text-align: left; }
+  .bonus li {
+    display: grid; align-content: start; gap: 12px; padding: 18px 14px 20px;
+    border-radius: var(--raio-caixa); background: var(--amarelo); color: var(--vinho);
+    box-shadow: 0 22px 40px -32px rgba(98, 59, 30, .55);
+  }
+  .bonus__rotulo {
+    justify-self: start; margin-left: 4px; padding: 5px 12px; border-radius: 999px;
+    background: var(--vinho); color: var(--creme);
+    font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1.2;
+  }
+  .bonus__titulo { margin: 0 4px 2px; font-size: 23px; line-height: 1.15; color: var(--vinho); }
+  .bonus__midia { position: relative; }
+  .bonus__midia video { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 14px; background: var(--creme-apoio); cursor: pointer; }
+  .bonus__midia .video__pausa { left: 10px; bottom: 10px; width: 40px; height: 40px; }
+  /* Bônus secretos: painel bordô com o pattern da marca e o cadeado */
+  .bonus__segredo {
+    position: relative; overflow: hidden; display: grid; place-items: center;
+    aspect-ratio: 3 / 2; border-radius: 14px; background: var(--vinho);
+  }
+  .bonus__segredo::before {
+    content: ""; position: absolute; inset: 0;
+    background: url(img/pattern.webp) center / 232px 92px repeat; opacity: .14;
+  }
+  .bonus__segredo span {
+    position: relative; display: grid; place-items: center; width: 96px; height: 96px; border-radius: 50%;
+    background: var(--amarelo); color: var(--vinho); box-shadow: 0 18px 34px -18px rgba(20, 4, 8, .8);
+  }
+  .bonus__segredo svg { width: 44px; height: 44px; }
+  .bonus .bonus__descricao { margin: 2px 4px 0; max-width: none; font-size: 16px; line-height: 1.5; color: var(--marrom); }
+  @media (min-width: 760px) {
+    .bonus { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1000px; gap: 18px; }
+    /* as quatro linhas de cada card (rótulo, título, mídia, texto) alinhadas entre os três */
+    @supports (grid-template-rows: subgrid) {
+      .bonus { grid-template-rows: auto auto auto 1fr; }
+      .bonus li { grid-row: span 4; grid-template-rows: subgrid; }
+    }
+    .bonus__segredo { aspect-ratio: 4 / 5; }
+    .bonus__titulo { font-size: 21px; }
+    .bonus .bonus__descricao { font-size: 15.5px; }
+  }
+  .final .chamada { color: var(--marrom); font-weight: 500; }
+  .final .botao { margin-top: 6px; }
+  .final .assinatura { font-size: 15px; font-weight: 400; }
+
+  /* ===== Rodapé ===== */
+  /* Pattern do manual (ASFIT e o olho alternados) em off-white sobre bordô */
+  .rodape { background: var(--vinho-escuro); color: rgba(247, 243, 232, .8); font-size: 14px; font-weight: 400; }
+  .rodape__pattern { height: 184px; background: url(img/pattern.webp) center top / 232px 92px repeat; opacity: .22; }
+  .rodape p { display: flex; justify-content: center; gap: 22px; padding: 18px var(--lateral) 26px; }
+
+  @media (max-width: 420px) {
+    .botao { padding: 0 24px; }
+    .bio .botao { width: 100%; }
+  }
+
+  /* ===== Telas maiores ===== */
+  @media (min-width: 900px) {
+    .topo { padding-top: 30px; }
+    .topo img { width: 200px; }
+    .hero__grade { grid-template-columns: minmax(0, 1.22fr) minmax(0, .78fr); gap: 36px; padding-top: 8px; }
+    .hero__texto { align-items: flex-start; text-align: left; align-self: center; padding: 20px 0 72px; gap: 18px; }
+    .hero h1 { font-size: clamp(38px, 3.45vw, 44px); max-width: none; }
+    .hero .sub { font-size: 19px; }
+    .form { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .campo--nome, .form .botao, .form .micro { grid-column: 1 / -1; }
+    .micro { text-align: left; padding-left: 4px; }
+    .hero { padding-bottom: 72px; }
+    .hero__foto { width: min(420px, 100%); align-self: center; }
+    .selo { width: 124px; }
+    .selo span { font-size: 10.5px; }
+    .selo strong { font-size: 39px; }
+    /* entre 900 e 1100 px a coluna da foto é estreita: selo menor, dentro da foto, no céu à direita da logo */
+    .hero__foto .selo { width: 96px; left: auto; right: 5%; top: 4%; bottom: auto; }
+    .hero__foto .selo span { font-size: 8.5px; }
+    .hero__foto .selo strong { font-size: 30px; }
+
+    .app { padding: 112px 0 104px; }
+    /* o vídeo no meio, com o treino e a dieta de um lado e a comunidade (o mais importante) do outro */
+    .app__grade { grid-template-columns: minmax(0, 1fr) 300px minmax(0, 1fr); gap: 56px; align-items: center; margin-top: 64px; }
+    .video { width: 100%; }
+    .recursos--antes { order: -1; }
+    .recursos--antes .recurso { grid-template-columns: minmax(0, 1fr) 44px; text-align: right; }
+    .recursos--antes .recurso img { grid-column: 2; }
+    .recursos--antes .recurso h3, .recursos--antes .recurso p { grid-column: 1; grid-row: auto; }
+    .recurso h3 { font-size: 23px; }
+    .recurso--destaque h3 { font-size: 31px; }
+    .recurso--destaque p { font-size: 17.5px; }
+
+    .bio { padding: 112px 0; }
+    .bio__grade { grid-template-columns: minmax(0, .82fr) minmax(0, 1fr); gap: 72px; }
+    .bio p { font-size: 18px; }
+    .numeros strong { font-size: 24px; }
+
+    .final { padding: 112px 0 104px; }
+    .final p { font-size: 19px; }
+  }
+
+  /* Movimento igual ao do site da mãe do Giovani: abertura entrando e blocos surgindo ao rolar */
+  @media (min-width: 1100px) {
+    .hero__foto .selo { width: 124px; left: -11%; right: auto; top: auto; bottom: 7%; }
+    .hero__foto .selo span { font-size: 10.5px; }
+    .hero__foto .selo strong { font-size: 39px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .js .entra { opacity: 0; transform: translateY(18px); animation: entra .9s var(--mola) forwards; animation-delay: calc(var(--d, 0) * 90ms); }
+    @keyframes entra { to { opacity: 1; transform: none; } }
+    .js .revela { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--mola), transform .9s var(--mola); transition-delay: calc(var(--d, 0) * 70ms); }
+    .js .revela.visivel { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .botao, .campo label { transition: none; }
+  }
+</style>
+</head>
+<body>
+<script>document.documentElement.className += ' js'</script>
+
+<a class="pular" href="#cadastro">Ir para o cadastro</a>
+
+<header class="topo">
+  <img src="img/logo-terracota.webp" alt="Asfit, além do shape" width="480" height="100">
+</header>
+
+<main>
+
+<!-- ===== DOBRA 1 — Promessa e cadastro ===== -->
+<section class="hero" aria-labelledby="titulo">
+  <div class="wrap hero__grade">
+    <div class="hero__texto">
+      <p class="grupo entra" style="--d:0"><img src="img/simbolo-creme.webp" alt="" width="168" height="91">Grupo de Espera da Asfit</p>
+      <h1 id="titulo" class="entra" style="--d:1">Tenha o seu treino, a sua dieta flexível e uma legião de gostosas do seu lado, tudo num app só.</h1>
+      <p class="sub entra" style="--d:2">O lançamento da Asfit é dia 11/11, na live oficial. Entre no Grupo de Espera e receba o link das inscrições antes de todo mundo.</p>
+
+      <!-- O envio é configurado no fim da página (ENVIAR_PARA e LINK_DO_GRUPO). Integrar antes de rodar tráfego. -->
+      <form class="form entra" id="cadastro" novalidate style="--d:3">
+        <div class="campo campo--nome">
+          <input id="nome" name="nome" type="text" autocomplete="given-name" placeholder=" " required aria-describedby="erro-nome">
+          <label for="nome">Seu nome</label>
+          <span class="erro" id="erro-nome" aria-live="polite"></span>
+        </div>
+        <div class="campo">
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" placeholder=" " required aria-describedby="erro-email">
+          <label for="email">Seu melhor e-mail</label>
+          <span class="erro" id="erro-email" aria-live="polite"></span>
+        </div>
+        <div class="campo">
+          <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="numeric" placeholder=" " required aria-describedby="erro-whatsapp">
+          <label for="whatsapp">Seu WhatsApp com DDD</label>
+          <span class="erro" id="erro-whatsapp" aria-live="polite"></span>
+        </div>
+        <input type="hidden" name="utm_source">
+        <input type="hidden" name="utm_medium">
+        <input type="hidden" name="utm_campaign">
+        <input type="hidden" name="utm_content">
+        <input type="hidden" name="utm_term">
+        <button class="botao" type="submit">Entrar no Grupo de Espera</button>
+        <p class="micro">É grátis e leva poucos segundos.</p>
+        <div class="sucesso" role="status" aria-live="polite" hidden>
+          <strong id="sucesso-titulo">Prontinho!</strong>
+          <p>Seu cadastro no Grupo de Espera da Asfit tá feito.</p>
+        </div>
+      </form>
+    </div>
+
+    <div class="hero__foto entra" style="--d:2">
+      <img src="img/agatha-por-do-sol.webp" alt="Agatha Sá no pôr do sol, com a logo da Asfit no céu" width="853" height="1066" fetchpriority="high">
+      <div class="selo" role="img" aria-label="Save the date: 11 de novembro"><span>Save the date</span><strong>11/11</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DOBRA 2 — A Asfit por dentro (vídeo do app) ===== -->
+<section class="app" aria-labelledby="titulo-app">
+  <div class="wrap">
+    <div class="cabeca revela">
+      <h2 id="titulo-app">Mô, estar sozinha faz qualquer mulher desistir da academia: até mesmo eu.</h2>
+      <p>Foi por isso que eu criei a Asfit, um app de treino e dieta com comunidade. E agora ela tá voltando com app novo, cheio de coisa que nunca mais vai te deixar treinar sozinha.</p>
+    </div>
+
+    <div class="app__grade">
+      <figure class="video revela">
+        <!-- Gravação de tela do app cortada no Aracut, com a música do vídeo antigo: toca sem som quando aparece na tela e só baixa nessa hora; o botão liga o som do começo -->
+        <video id="video-app" muted playsinline loop preload="none" poster="img/video-capa.webp" width="720" height="1280" aria-label="Vídeo com música: a Asfit por dentro, com o treino, a dieta, a água, a comunidade e a corrida">
+          <source src="video/asfit-por-dentro.mp4" type="video/mp4">
+        </video>
+        <button class="video__pausa" type="button" data-estado="parado" aria-label="Tocar vídeo">
+          <svg class="icone-pausar" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+          <svg class="icone-tocar" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+        </button>
+        <button class="video__som" type="button" aria-pressed="false">
+          <svg class="icone-mudo" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M56.88,31.93A12,12,0,1,0,39.12,48.07L64.51,76H32A20,20,0,0,0,12,96v64a20,20,0,0,0,20,20H75.88l68.75,53.47A12,12,0,0,0,164,224V185.44l35.12,38.63a12,12,0,0,0,17.76-16.14ZM36,100H68v56H36Zm104,99.46L92,162.13V106.24L140,159Zm-31-134a12,12,0,0,1,2.11-16.84l33.51-26.07A12,12,0,0,1,164,32V94.94a12,12,0,0,1-24,0V56.54l-14.15,11A12,12,0,0,1,109,65.44Zm74,49.35a12,12,0,0,1,18-15.85,44,44,0,0,1,5.55,50.21,12,12,0,0,1-21-11.55A19.67,19.67,0,0,0,188,128,20,20,0,0,0,183,114.79ZM252,128a84.18,84.18,0,0,1-19.11,53.35,12,12,0,1,1-18.53-15.25A60,60,0,0,0,212.73,88a12,12,0,1,1,17.88-16A83.87,83.87,0,0,1,252,128Z"/></svg>
+          <svg class="icone-som" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M157.27,21.22a12,12,0,0,0-12.64,1.31L75.88,76H32A20,20,0,0,0,12,96v64a20,20,0,0,0,20,20H75.88l68.75,53.47A12,12,0,0,0,164,224V32A12,12,0,0,0,157.27,21.22ZM36,100H68v56H36Zm104,99.46L92,162.13V93.87l48-37.33ZM212,128a44,44,0,0,1-11,29.11,12,12,0,1,1-18-15.88,20,20,0,0,0,0-26.43,12,12,0,0,1,18-15.86A43.94,43.94,0,0,1,212,128Zm40,0a83.87,83.87,0,0,1-21.39,56,12,12,0,0,1-17.89-16,60,60,0,0,0,0-80,12,12,0,1,1,17.88-16A83.87,83.87,0,0,1,252,128Z"/></svg>
+          <span class="video__rotulo">Ativar som</span>
+        </button>
+      </figure>
+
+      <ul class="recursos recursos--antes revela" style="--d:1">
+        <li class="recurso">
+          <img src="img/simbolo-creme.webp" alt="" width="168" height="91" loading="lazy">
+          <h3>Você nunca mais chega perdida na academia.</h3>
+          <p>O seu treino já vem montado, com vídeo meu em cada exercício e a carga que você usou da última vez.</p>
+        </li>
+        <li class="recurso">
+          <img src="img/simbolo-creme.webp" alt="" width="168" height="91" loading="lazy">
+          <h3>Quem te falou que pra ficar gostosa tem que passar fome?</h3>
+          <p>Com a dieta flexível e o contador de calorias e de água, você come o que gosta sabendo quanto cabe no seu dia, sem depender de nutri ou do GPT.</p>
+        </li>
+      </ul>
+
+      <ul class="recursos revela" style="--d:2">
+        <li class="recurso recurso--destaque">
+          <img src="img/simbolo-creme.webp" alt="" width="168" height="91" loading="lazy">
+          <h3>E o mais importante: lá você nunca mais treina sozinha.</h3>
+          <p>Tem feed com as meninas da legião treinando, amizade pra achar a sua parceira de treino e desafio com ranking e premiação.</p>
+        </li>
+      </ul>
+    </div>
+
+    <p class="extra revela">E ainda tem <strong>lembrete de creatina e suplementação</strong> e <strong>calls em grupo comigo e com convidados especiais</strong>.</p>
+    <div class="centro revela" style="--d:1">
+      <a class="botao botao--amarelo" href="#cadastro">Entrar no Grupo de Espera</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DOBRA 3 — Abertura, bônus e chamada final ===== -->
+<section class="final" aria-labelledby="titulo-final">
+  <div class="wrap final__caixa">
+    <div class="selo revela" role="img" aria-label="Save the date: 11 de novembro"><span>Save the date</span><strong>11/11</strong></div>
+    <h2 id="titulo-final" class="revela" style="--d:1">Mô, a nova era da&nbsp;Asfit começa dia&nbsp;11/11, na live oficial de lançamento.</h2>
+    <p class="revela" style="--d:2">E quem se inscrever mais rápido no dia da abertura vai ganhar bônus inéditos, como:</p>
+    <ul class="bonus">
+      <li class="revela">
+        <span class="bonus__rotulo">Bônus 1</span>
+        <h3 class="bonus__titulo">Um treino gravado comigo</h3>
+        <figure class="bonus__midia">
+          <!-- Close do reel C4WVwsTgJRx (elevação lateral, 720p), em vaivém para o loop não dar salto -->
+          <video muted playsinline loop preload="none" poster="img/bonus-treino-capa.webp" width="720" height="900" aria-label="Agatha Sá treinando ombro com halteres na academia">
+            <source src="video/bonus-treino.mp4" type="video/mp4">
+          </video>
+          <button class="video__pausa" type="button" data-estado="parado" aria-label="Tocar vídeo">
+          <svg class="icone-pausar" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+          <svg class="icone-tocar" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+        </button>
+        </figure>
+        <p class="bonus__descricao">Se você for a primeira a se inscrever, vai treinar comigo, e esse treino vai ser gravado.</p>
+      </li>
+      <li class="revela" style="--d:1">
+        <span class="bonus__rotulo">Bônus 2</span>
+        <h3 class="bonus__titulo">Um Kit das Gostosas</h3>
+        <figure class="bonus__midia">
+          <!-- Mockup animado do Kit das Gostosas (do Giovani, 09/10/2026), em vaivém -->
+          <video muted playsinline loop preload="none" poster="img/kit-capa.webp" width="720" height="900" aria-label="Kit das Gostosas: caixa da Asfit com creatina, garrafa, cropped e pulseira">
+            <source src="video/kit-das-gostosas.mp4" type="video/mp4">
+          </video>
+          <button class="video__pausa" type="button" data-estado="parado" aria-label="Tocar vídeo">
+          <svg class="icone-pausar" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+          <svg class="icone-tocar" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+        </button>
+        </figure>
+        <p class="bonus__descricao">Se você estiver entre as primeiras inscritas, recebe em casa o kit com creatina, garrafa, cropped da Asfit, pulseira de olho grego e muito mais.</p>
+      </li>
+      <li class="revela" style="--d:2">
+        <span class="bonus__rotulo">Bônus 3</span>
+        <h3 class="bonus__titulo">Bônus secretos</h3>
+        <div class="bonus__segredo" role="img" aria-label="Cadeado: bônus secretos">
+          <span><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80Zm-72,78.63V184a8,8,0,0,1-16,0V158.63a24,24,0,1,1,16,0ZM160,80H96V56a32,32,0,0,1,64,0Z"/></svg></span>
+        </div>
+        <p class="bonus__descricao">Esses eu só vou revelar no dia 11/11, na live oficial de lançamento.</p>
+      </li>
+    </ul>
+    <p class="revela">Isso sem falar no <strong>preço promocional de lançamento</strong> e no <strong>tempo de acesso aumentado</strong>, uma condição que talvez eu nunca mais ofereça de novo.</p>
+    <p class="chamada revela">Pra receber o link das inscrições antes de todo mundo e chegar na frente pra pegar esses bônus, você precisa estar no Grupo de Espera.</p>
+    <div class="revela"><a class="botao" href="#cadastro">Entrar no Grupo de Espera</a></div>
+    <p class="assinatura revela" style="--d:1">Vai lá que eu conto com você pra gente ficar cada vez mais gostosa juntas!</p>
+  </div>
+</section>
+
+<!-- ===== DOBRA 4 — Agatha (fecha a página) ===== -->
+<section class="bio" aria-labelledby="titulo-bio">
+  <div class="wrap bio__grade">
+    <figure class="bio__foto revela">
+      <img src="img/agatha-academia.webp" alt="Agatha Sá na academia" width="800" height="1064" loading="lazy">
+    </figure>
+    <div class="bio__texto revela" style="--d:1">
+      <h2 id="titulo-bio">Agatha Sá</h2>
+      <p>Sou amazonense, formada em Educação Física e criadora da Asfit. Passei na Federal do Amazonas sem nem saber se era isso que eu queria, e foi o curso que me tirou do sedentarismo. Terminei a graduação no Rio, onde moro hoje.</p>
+      <p>No meu TCC, pesquisei como as influenciadoras fitness afetam a imagem e os hábitos das mulheres. Por isso, eu falo de treino e comida sem terrorismo alimentar e sem loucura. E é assim que tudo funciona dentro da Asfit.</p>
+      <blockquote class="citacao">
+        <img src="img/simbolo-creme.webp" alt="" width="168" height="91" loading="lazy">
+        <p>É mais do que um app, é uma legião de gostosas. Eu criei e eu tô lá juntinho com vocês.</p>
+      </blockquote>
+      <ul class="numeros">
+        <li><strong>2,6 mi</strong>de seguidores</li>
+        <li><strong>Bacharel</strong>em Educação Física</li>
+        <li><strong>Criadora</strong>da Asfit</li>
+      </ul>
+      <a class="botao botao--amarelo" href="#cadastro">Entrar no Grupo de Espera</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="rodape">
+  <div class="rodape__pattern" aria-hidden="true"></div>
+  <div>
+    <p><span>@agathasa</span><span>@asfitcomunidade</span></p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    // ===== CONFIGURAR ANTES DE RODAR TRÁFEGO =====
+    // ENVIAR_PARA: endereço que recebe o cadastro (webhook da ferramenta). Vazio = o cadastro não vai para lugar nenhum.
+    // LINK_DO_GRUPO: convite do Grupo de Espera no WhatsApp. Com ele, a pessoa vai direto para o grupo depois do cadastro.
+    var ENVIAR_PARA = '';
+    var LINK_DO_GRUPO = '';
+
+    var form = document.getElementById('cadastro');
+    var nome = document.getElementById('nome');
+    var email = document.getElementById('email');
+    var whats = document.getElementById('whatsapp');
+    var botao = form.querySelector('button[type="submit"]');
+    var TEXTO_BOTAO = botao.textContent;
+
+    // UTMs do anúncio vão junto com o cadastro
+    var params = new URLSearchParams(location.search);
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+      if (params.get(k)) form.elements[k].value = params.get(k);
+    });
+
+    whats.addEventListener('input', function () {
+      var d = whats.value.replace(/\D/g, '').slice(0, 11);
+      var v = d;
+      if (d.length > 2) v = '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      if (d.length > 7) v = '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+      whats.value = v;
+    });
+
+    function marca(campo, msg) {
+      document.getElementById('erro-' + campo.id).textContent = msg || '';
+      campo.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      return !msg;
+    }
+
+    var enviado = false;
+    function seguir() {
+      if (enviado) return;
+      enviado = true;
+      if (LINK_DO_GRUPO) { location.href = LINK_DO_GRUPO; return; }
+      var primeiroNome = nome.value.trim().split(/\s+/)[0];
+      document.getElementById('sucesso-titulo').textContent = 'Prontinho, ' + primeiroNome + '!';
+      Array.prototype.forEach.call(form.children, function (el) {
+        if (!el.classList.contains('sucesso') && el.type !== 'hidden') el.hidden = true;
+      });
+      form.querySelector('.sucesso').hidden = false;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var ok = true;
+      ok = marca(nome, nome.value.trim().length < 2 ? 'Digite o seu nome.' : '') && ok;
+      ok = marca(email, /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim()) ? '' : 'Confira o e-mail: parece que falta alguma coisa.') && ok;
+      ok = marca(whats, whats.value.replace(/\D/g, '').length < 10 ? 'Digite o número com DDD.' : '') && ok;
+      if (!ok) {
+        var primeiro = form.querySelector('[aria-invalid="true"]');
+        if (primeiro) primeiro.focus();
+        return;
+      }
+      botao.disabled = true;
+      botao.textContent = 'Entrando no grupo…';
+      if (ENVIAR_PARA) {
+        fetch(ENVIAR_PARA, { method: 'POST', body: new FormData(form), mode: 'no-cors', keepalive: true }).then(seguir, seguir);
+        setTimeout(seguir, 3000);
+      } else {
+        seguir();
+      }
+    });
+
+    // Quem volta do WhatsApp pelo botão "voltar" encontra o formulário de novo
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) { enviado = false; botao.disabled = false; botao.textContent = TEXTO_BOTAO; }
+    });
+
+    // Blocos surgem ao entrar na tela (mesmo código do site da mãe do Giovani)
+    var alvos = document.querySelectorAll('.revela');
+    var semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (semMovimento || !('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(alvos, function (el) { el.classList.add('visivel'); });
+    } else {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visivel'); io.unobserve(e.target); } });
+      }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+      Array.prototype.forEach.call(alvos, function (el) { io.observe(el); });
+    }
+
+    // Vídeo do app: toca sem som quando aparece na tela (e só então baixa); o botão liga o som do começo
+    var video = document.getElementById('video-app');
+    var reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var pausa = document.querySelector('.video__pausa');
+    var som = document.querySelector('.video__som');
+    var rotulo = som.querySelector('.video__rotulo');
+    var jaLigouSom = false;
+    var pausadoPelaPessoa = false;
+    function tocar() { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+    if ('IntersectionObserver' in window && !reduzir) {
+      new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (e.isIntersecting) { if (!pausadoPelaPessoa) tocar(); }
+          else video.pause();
+        });
+      }, { threshold: 0.35 }).observe(video);
+    }
+    function atualizarPausa() {
+      pausa.setAttribute('data-estado', video.paused ? 'parado' : 'tocando');
+      pausa.setAttribute('aria-label', video.paused ? 'Tocar vídeo' : 'Pausar vídeo');
+    }
+    video.addEventListener('play', atualizarPausa);
+    video.addEventListener('pause', atualizarPausa);
+    function alternarPausa() {
+      if (video.paused) { pausadoPelaPessoa = false; tocar(); }
+      else { pausadoPelaPessoa = true; video.pause(); }
+    }
+    pausa.addEventListener('click', alternarPausa);
+    function alternarSom() {
+      if (video.muted || video.paused) {
+        pausadoPelaPessoa = false;
+        if (!jaLigouSom) { video.currentTime = 0; jaLigouSom = true; }
+        video.muted = false;
+        tocar();
+        som.setAttribute('aria-pressed', 'true');
+        rotulo.textContent = 'Tirar som';
+      } else {
+        video.muted = true;
+        som.setAttribute('aria-pressed', 'false');
+        rotulo.textContent = 'Ativar som';
+      }
+    }
+    som.addEventListener('click', alternarSom);
+    video.addEventListener('click', alternarSom);
+
+    // Vídeos dos bônus: tocam sem som quando aparecem (e só então baixam); tocar no vídeo ou no botão pausa
+    Array.prototype.forEach.call(document.querySelectorAll('.bonus__midia'), function (fig) {
+      var v = fig.querySelector('video');
+      var b = fig.querySelector('.video__pausa');
+      var pausadoPelaPessoa = false;
+      function tocarEste() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      if ('IntersectionObserver' in window && !reduzir) {
+        new IntersectionObserver(function (entradas) {
+          entradas.forEach(function (e) {
+            if (e.isIntersecting) { if (!pausadoPelaPessoa) tocarEste(); }
+            else v.pause();
+          });
+        }, { threshold: 0.35 }).observe(v);
+      }
+      function atualizar() {
+        b.setAttribute('data-estado', v.paused ? 'parado' : 'tocando');
+        b.setAttribute('aria-label', v.paused ? 'Tocar vídeo' : 'Pausar vídeo');
+      }
+      v.addEventListener('play', atualizar);
+      v.addEventListener('pause', atualizar);
+      function alternar() {
+        if (v.paused) { pausadoPelaPessoa = false; tocarEste(); }
+        else { pausadoPelaPessoa = true; v.pause(); }
+      }
+      b.addEventListener('click', alternar);
+      v.addEventListener('click', alternar);
+    });
+  })();
+</script>
+</body>
+</html>
