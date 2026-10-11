@@ -13,9 +13,9 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Grupo de Espera · Asfit">
 <meta property="og:description" content="O lançamento da Asfit é dia 11/11, na live oficial. Entre no Grupo de Espera e receba o link das inscrições antes de todo mundo.">
-<meta property="og:url" content="https://nova-asfit.pages.dev/">
+<meta property="og:url" content="https://asfit-captacao.netlify.app/">
 <!-- Arte da prévia do link: fonte em ../captacao-nova-asfit-previa-link.html. Ao trocar a arte, trocar também o nome do arquivo (o WhatsApp guarda a prévia antiga) -->
-<meta property="og:image" content="https://nova-asfit.pages.dev/img/compartilhar-asfit.jpg">
+<meta property="og:image" content="https://asfit-captacao.netlify.app/img/compartilhar-asfit.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -365,7 +365,7 @@
       <h1 id="titulo" class="entra" style="--d:1">Tenha o seu treino, a sua dieta flexível e uma legião de gostosas do seu lado, tudo num app só.</h1>
       <p class="sub entra" style="--d:2">O lançamento da Asfit é dia 11/11, na live oficial. Entre no Grupo de Espera e receba o link das inscrições antes de todo mundo.</p>
 
-      <!-- O envio é configurado no fim da página (ENVIAR_PARA e LINK_DO_GRUPO). Integrar antes de rodar tráfego. -->
+      <!-- O cadastro grava no Supabase (agatha_leads). Falta só o LINK_DO_GRUPO, no fim da página. -->
       <form class="form entra" id="cadastro" novalidate style="--d:3">
         <div class="campo campo--nome">
           <input id="nome" name="nome" type="text" autocomplete="given-name" placeholder=" " required aria-describedby="erro-nome">
@@ -546,7 +546,8 @@
 <script>
   (function () {
     // ===== CONFIGURAR ANTES DE RODAR TRÁFEGO =====
-    // ENVIAR_PARA: endereço que recebe o cadastro (webhook da ferramenta). Vazio = o cadastro não vai para lugar nenhum.
+    // O cadastro é sempre gravado no Supabase (tabela agatha_leads, pagina = 'espera'). A chave é a pública: só permite inserir.
+    // ENVIAR_PARA: opcional, um segundo endereço (webhook de ferramenta) que também recebe o cadastro.
     // LINK_DO_GRUPO: convite do Grupo de Espera no WhatsApp. Com ele, a pessoa vai direto para o grupo depois do cadastro.
     var ENVIAR_PARA = '';
     var LINK_DO_GRUPO = '';
@@ -604,12 +605,27 @@
       }
       botao.disabled = true;
       botao.textContent = 'Entrando no grupo…';
-      if (ENVIAR_PARA) {
-        fetch(ENVIAR_PARA, { method: 'POST', body: new FormData(form), mode: 'no-cors', keepalive: true }).then(seguir, seguir);
-        setTimeout(seguir, 3000);
-      } else {
-        seguir();
-      }
+      var lead = {
+        pagina: 'espera',
+        nome: nome.value.trim().slice(0, 120),
+        email: email.value.trim().slice(0, 200),
+        whatsapp: whats.value.replace(/\D/g, '')
+      };
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+        if (form.elements[k].value) lead[k] = form.elements[k].value.slice(0, 200);
+      });
+      if (document.referrer) lead.referrer = document.referrer.slice(0, 500);
+      // Só segue depois que o banco responde (ou em 3 s, o que vier primeiro): se falhar, a pessoa entra no grupo do mesmo jeito.
+      try {
+        fetch('https://ewnsttmmbcdzchzpxqjb.supabase.co/rest/v1/agatha_leads', {
+          method: 'POST',
+          headers: { 'apikey': 'sb_publishable_mIb6RJkWqC5QESdczkFWng_Oo5O17hi', 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+          body: JSON.stringify(lead),
+          keepalive: true
+        }).then(seguir, seguir);
+        if (ENVIAR_PARA) fetch(ENVIAR_PARA, { method: 'POST', body: new FormData(form), mode: 'no-cors', keepalive: true }).catch(function () {});
+      } catch (err) { seguir(); }
+      setTimeout(seguir, 3000);
     });
 
     // Quem volta do WhatsApp pelo botão "voltar" encontra o formulário de novo

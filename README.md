@@ -4,7 +4,9 @@ Página de captação do lançamento da Asfit (Agatha Sá). Quem se cadastra ent
 Espera e recebe o link das inscrições antes de todo mundo. O lançamento é na live oficial
 de 11/11.
 
-Versão de referência no ar: https://nova-asfit.pages.dev (Cloudflare Pages, provisória).
+No ar: https://asfit-captacao.netlify.app (Netlify, site id `14e57cdd-9043-4403-b1e3-c1b11750685b`, deploy manual:
+`npx -y netlify-cli deploy --prod --dir . --site 14e57cdd-9043-4403-b1e3-c1b11750685b`).
+Versão anterior de referência: https://nova-asfit.pages.dev (Cloudflare Pages).
 
 - `index.html` — página completa, arquivo único com o CSS e o JS embutidos.
 - `img/` — fotos, logo, capas dos vídeos e a imagem de prévia do link (`compartilhar-asfit.jpg`, 1200x630).
@@ -22,17 +24,16 @@ escolher este repositório e deixar os campos assim:
 
 ## Antes de rodar tráfego
 
-1. **Formulário.** No fim do `index.html` há duas variáveis vazias:
-   - `ENVIAR_PARA`: o endereço (webhook) que recebe o cadastro. A página manda um POST
-     `multipart/form-data` com os campos `nome`, `email`, `whatsapp`, `utm_source`,
-     `utm_medium`, `utm_campaign`, `utm_content` e `utm_term`. As UTMs vêm da URL da página.
-   - `LINK_DO_GRUPO`: o convite do Grupo de Espera no WhatsApp. Preenchido, a pessoa vai
-     direto para o grupo depois do cadastro.
-
-   Enquanto as duas estiverem vazias, o cadastro só mostra a mensagem de sucesso e não vai
-   para lugar nenhum.
-2. **Domínio.** Trocar `https://nova-asfit.pages.dev` pelo domínio final no `og:url` e no
-   `og:image`, no topo do `index.html`. É o que monta a prévia do link no WhatsApp.
+1. **Formulário.** O cadastro já grava no Supabase (projeto `ewnsttmmbcdzchzpxqjb`, tabela
+   `agatha_leads`, `pagina = espera`) com nome, e-mail, WhatsApp e as UTMs da URL. Os números
+   aparecem no painel: https://asfit-painel-leads.netlify.app (pasta `../asfit-painel-leads`).
+   No fim do `index.html` ainda há duas variáveis:
+   - `LINK_DO_GRUPO`: **falta preencher.** É o convite do Grupo de Espera no WhatsApp. Com ele,
+     a pessoa vai direto para o grupo depois do cadastro; vazio, ela só vê a mensagem de sucesso.
+   - `ENVIAR_PARA`: opcional. Um segundo endereço (webhook) que também recebe o cadastro em
+     `multipart/form-data`.
+2. **Domínio.** O `og:url` e o `og:image` apontam para `https://asfit-captacao.netlify.app`. Se entrar
+   domínio próprio, trocar nos dois, no topo do `index.html`. É o que monta a prévia do link no WhatsApp.
 3. **Indexação.** A página está com `noindex` (na meta `robots` e no `_headers`). Se ela tiver
    que aparecer no Google, tirar dos dois lugares.
 
