@@ -9,7 +9,8 @@ No ar: https://asfit-captacao.netlify.app (Netlify, site id `14e57cdd-9043-4403-
 Versão anterior de referência: https://nova-asfit.pages.dev (Cloudflare Pages).
 
 - `index.html` — página completa, arquivo único com o CSS e o JS embutidos.
-- `img/` — fotos, logo, capas dos vídeos e a imagem de prévia do link (`compartilhar-asfit.jpg`, 1200x630).
+- `img/` — fotos, logo, capas dos vídeos, a imagem de prévia do link (`compartilhar-asfit.jpg`, 1200x630) e
+  capa e contracapa dos 3 manuais de receitas do kit (`manual-*.webp`, primeira e última página de cada PDF).
 - `video/` — os três vídeos da página (MP4 de 1,7 a 2,9 MB). Só baixam quando aparecem na tela.
 - `fonts/` — Figtree embutida (licença OFL), para o texto não pular quando a fonte carrega.
 - `_headers` — `noindex` e cache das imagens e da fonte. A Netlify lê esse mesmo formato.
@@ -43,3 +44,6 @@ escolher este repositório e deixar os campos assim:
   botão pausa. No vídeo do app, o botão "Ativar som" liga a música do começo.
 - Os blocos surgem ao rolar a página. Com "reduzir movimento" ligado no aparelho, tudo
   aparece direto, sem animação.
+- Na dobra do kit, os 3 manuais são um mockup em CSS 3D, sem biblioteca: giram com o dedo ou o
+  mouse (com embalo) e com as setas do teclado quando a cena está em foco. Ao aparecer, a fila
+  dá uma volta e para de frente; com "reduzir movimento", não dá a volta nem embala.
