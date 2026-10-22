@@ -137,6 +137,14 @@
   .campo input:focus { outline: none; border-color: var(--vinho); box-shadow: 0 0 0 4px rgba(135, 58, 74, .14); }
   .campo input:focus + label, .campo input:not(:placeholder-shown) + label { transform: translateY(-10px) scale(.76); color: var(--vinho); }
   .campo input[aria-invalid="true"] { border-color: var(--erro); }
+  /* País do WhatsApp: o select fica invisível por cima da bandeira, então abre a lista nativa do celular */
+  .campo--whats input { padding-left: 98px; }
+  .campo--whats label { left: 99px; max-width: calc(100% - 118px); }
+  .ddi { position: absolute; left: 1.5px; top: 1.5px; height: 55px; width: 86px; display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(98, 59, 30, .16); }
+  .ddi__ver { font-size: 15.5px; color: var(--marrom); white-space: nowrap; }
+  .ddi__ver::after { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 0 3px 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); opacity: .6; }
+  .ddi select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; }
+  .ddi:focus-within { border-radius: var(--raio-campo) 0 0 var(--raio-campo); box-shadow: inset 0 0 0 2px var(--vinho); }
   .erro { display: block; padding: 4px 0 0 6px; font-size: 13.5px; font-weight: 500; color: var(--erro); }
   .erro:empty { display: none; }
   .form .botao { width: 100%; margin-top: 4px; }
@@ -363,7 +371,7 @@
     .hero h1 { font-size: clamp(38px, 3.45vw, 44px); max-width: none; }
     .hero .sub { font-size: 19px; }
     .form { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-    .campo--nome, .form .botao, .form .micro { grid-column: 1 / -1; }
+    .campo--whats, .form .botao, .form .micro { grid-column: 1 / -1; }
     .micro { text-align: left; padding-left: 4px; }
     .hero { padding-bottom: 72px; }
     .hero__foto { width: min(420px, 100%); align-self: center; }
@@ -455,9 +463,10 @@
           <label for="email">Seu melhor e-mail</label>
           <span class="erro" id="erro-email" aria-live="polite"></span>
         </div>
-        <div class="campo">
-          <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="numeric" placeholder=" " required aria-describedby="erro-whatsapp">
-          <label for="whatsapp">Seu WhatsApp com DDD</label>
+        <div class="campo campo--whats">
+          <div class="ddi"><span class="ddi__ver" id="ddi-ver" aria-hidden="true">🇧🇷 +55</span><select id="ddi" aria-label="País do seu WhatsApp"></select></div>
+          <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="tel" placeholder=" " required aria-describedby="erro-whatsapp">
+          <label for="whatsapp" id="rotulo-whatsapp">Seu WhatsApp com DDD</label>
           <span class="erro" id="erro-whatsapp" aria-live="polite"></span>
         </div>
         <input type="hidden" name="utm_source">
@@ -710,12 +719,81 @@
       if (params.get(k)) form.elements[k].value = params.get(k);
     });
 
-    whats.addEventListener('input', function () {
-      var d = whats.value.replace(/\D/g, '').slice(0, 11);
-      var v = d;
-      if (d.length > 2) v = '(' + d.slice(0, 2) + ') ' + d.slice(2);
-      if (d.length > 7) v = '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
-      whats.value = v;
+    // País do WhatsApp. Brasil grava só DDD + número, como sempre; os outros gravam +DDI + número (o painel não põe o 55 neles).
+    var PAISES = [
+      ['🇧🇷', 'Brasil', '55'], ['🇵🇹', 'Portugal', '351'], ['🇺🇸', 'Estados Unidos', '1'],
+      ['🇩🇪', 'Alemanha', '49'], ['🇦🇴', 'Angola', '244'], ['🇦🇷', 'Argentina', '54'], ['🇦🇺', 'Austrália', '61'],
+      ['🇧🇪', 'Bélgica', '32'], ['🇧🇴', 'Bolívia', '591'], ['🇨🇦', 'Canadá', '1'], ['🇨🇱', 'Chile', '56'],
+      ['🇨🇴', 'Colômbia', '57'], ['🇪🇸', 'Espanha', '34'], ['🇫🇷', 'França', '33'], ['🇳🇱', 'Holanda', '31'],
+      ['🇮🇪', 'Irlanda', '353'], ['🇮🇹', 'Itália', '39'], ['🇯🇵', 'Japão', '81'], ['🇲🇽', 'México', '52'],
+      ['🇲🇿', 'Moçambique', '258'], ['🇵🇾', 'Paraguai', '595'], ['🇬🇧', 'Reino Unido', '44'], ['🇨🇭', 'Suíça', '41'],
+      ['🇺🇾', 'Uruguai', '598'], ['🌐', 'Outro país', '']
+    ];
+    var ddi = document.getElementById('ddi');
+    var ddiVer = document.getElementById('ddi-ver');
+    var rotuloWhats = document.getElementById('rotulo-whatsapp');
+    PAISES.forEach(function (p, i) {
+      var o = document.createElement('option');
+      o.value = i;
+      o.textContent = p[0] + ' ' + p[1] + (p[2] ? ' (+' + p[2] + ')' : '');
+      ddi.appendChild(o);
+    });
+    var OUTRO = PAISES.length - 1;
+    function pais() { return PAISES[ddi.value] || PAISES[0]; }
+    function ehBrasil() { return ddi.value === '0'; }
+
+    function formata() {
+      var bruto = whats.value;
+      // Colou ou o celular preencheu com +: +55 vira número brasileiro; qualquer outro + vira "Outro país"
+      if (/^\s*(\+|00)/.test(bruto) && ddi.value !== String(OUTRO)) {
+        var todos = bruto.replace(/\D/g, '').replace(/^00/, '');
+        if (/^55\d{10,11}$/.test(todos)) { ddi.value = '0'; bruto = todos.slice(2); }
+        else if (todos.length > 4 && !/^55/.test(todos)) { ddi.value = String(OUTRO); bruto = '+' + todos; }
+        trocaPais();
+      }
+      if (ehBrasil()) {
+        var d = bruto.replace(/\D/g, '').slice(0, 11);
+        var v = d;
+        if (d.length > 2) v = '(' + d.slice(0, 2) + ') ' + d.slice(2);
+        if (d.length > 7) v = '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+        whats.value = v;
+      } else {
+        var mais = ddi.value === String(OUTRO) ? '+' : '';
+        var limite = 15 - pais()[2].length;
+        var resto = bruto.replace(/[^\d ]/g, '').replace(/^ +/, '').replace(/ {2,}/g, ' ');
+        var n = 0, out = '';
+        for (var i = 0; i < resto.length && n < limite; i++) { out += resto[i]; if (resto[i] !== ' ') n++; }
+        whats.value = (out ? mais : '') + out;
+      }
+    }
+    function trocaPais() {
+      var p = pais();
+      ddiVer.textContent = p[0] + (p[2] ? ' +' + p[2] : ' +');
+      rotuloWhats.textContent = ehBrasil() ? 'Seu WhatsApp com DDD' : (p[2] ? 'Seu WhatsApp' : 'WhatsApp com código do país');
+      whats.setAttribute('autocomplete', ehBrasil() ? 'tel-national' : 'tel');
+    }
+    // O número como vai pro banco. Vazio = inválido.
+    function numeroFinal() {
+      var d = whats.value.replace(/\D/g, '');
+      if (ehBrasil()) return d.length >= 10 && d.length <= 11 ? d : '';
+      var p = pais()[2];
+      if (!p) { d = d.replace(/^0+/, ''); return d.length >= 8 && d.length <= 15 ? '+' + d : ''; }
+      d = d.replace(/^0+/, '');
+      return d.length >= 6 && (p + d).length <= 15 ? '+' + p + d : '';
+    }
+    function erroWhats() {
+      if (numeroFinal()) return '';
+      if (ehBrasil()) return 'Digite o número com DDD.';
+      return pais()[2] ? 'Confira o número: parece que falta alguma coisa.' : 'Digite o número com o código do país, ex.: +351 912 345 678.';
+    }
+
+    whats.addEventListener('input', formata);
+    ddi.addEventListener('change', function () {
+      trocaPais();
+      whats.value = whats.value.replace(/^\+/, '');
+      formata();
+      if (whats.getAttribute('aria-invalid') === 'true') marca(whats, erroWhats());
+      whats.focus();
     });
 
     function marca(campo, msg) {
@@ -742,7 +820,7 @@
       var ok = true;
       ok = marca(nome, nome.value.trim().length < 2 ? 'Digite o seu nome.' : '') && ok;
       ok = marca(email, /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim()) ? '' : 'Confira o e-mail: parece que falta alguma coisa.') && ok;
-      ok = marca(whats, whats.value.replace(/\D/g, '').length < 10 ? 'Digite o número com DDD.' : '') && ok;
+      ok = marca(whats, erroWhats()) && ok;
       if (!ok) {
         var primeiro = form.querySelector('[aria-invalid="true"]');
         if (primeiro) primeiro.focus();
@@ -754,7 +832,7 @@
         pagina: 'espera',
         nome: nome.value.trim().slice(0, 120),
         email: email.value.trim().slice(0, 200),
-        whatsapp: whats.value.replace(/\D/g, '')
+        whatsapp: numeroFinal()
       };
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
         if (form.elements[k].value) lead[k] = form.elements[k].value.slice(0, 200);
