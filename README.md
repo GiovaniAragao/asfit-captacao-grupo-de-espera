@@ -47,3 +47,12 @@ escolher este repositório e deixar os campos assim:
 - Na dobra do kit, os 3 manuais são um mockup em CSS 3D, sem biblioteca: giram com o dedo ou o
   mouse (com embalo) e com as setas do teclado quando a cena está em foco. Ao aparecer, a fila
   dá uma volta e para de frente; com "reduzir movimento", não dá a volta nem embala.
+
+## Meta Pixel + API de Conversão (desde 26/10)
+
+- Pixel `1142202521589184`. PageView e Lead saem pelo navegador (`fbq`) e pelo servidor (`/api/meta`, função em `netlify/functions/meta.mjs`) com o mesmo `event_id`, então o Meta deduplica.
+- O token fica na variável `META_CAPI_TOKEN` da Netlify (escopo functions). Nunca no código. Trocar: `npx netlify-cli env:set META_CAPI_TOKEN <novo> --scope functions` e fazer deploy de novo.
+- Testar no Gerenciador de Eventos: abrir a aba Eventos de teste, pegar o código e abrir a página com `?teste_meta=CODIGO`.
+- A origem (UTMs, `ad_id`, `adset_id`, `campaign_id`, nomes, `placement`, `site_source_name`, `fbclid`) é guardada 30 dias no navegador e gravada no cadastro (`agatha_leads`). Macro crua (`{{ad.id}}`) é descartada.
+- Parâmetros de URL pra colar no anúncio (campo "Parâmetros de URL" do Meta):
+  `utm_source=facebook&utm_medium=paid&utm_campaign={{campaign.name}}&utm_term={{adset.name}}&utm_content={{ad.name}}&campaign_id={{campaign.id}}&adset_id={{adset.id}}&ad_id={{ad.id}}&campaign_name={{campaign.name}}&adset_name={{adset.name}}&ad_name={{ad.name}}&placement={{placement}}&site_source_name={{site_source_name}}`

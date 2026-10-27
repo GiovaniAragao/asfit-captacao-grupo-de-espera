@@ -2,6 +2,80 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<!-- Meta Pixel + API de Conversão (Pixel 1142202521589184). Cada evento sai pelo navegador (fbq) e pelo servidor
+     (/api/meta, função da Netlify com o token), com o mesmo event_id: o Meta junta os dois e conta uma vez só.
+     A origem (UTMs, ad_id, fbclid) fica guardada 30 dias no navegador e vai junto com o cadastro. -->
+<script>
+  (function () {
+    var PIXEL = '1142202521589184';
+    var CHAVES = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid',
+      'ad_id', 'adset_id', 'campaign_id', 'ad_name', 'adset_name', 'campaign_name', 'placement', 'site_source_name'];
+    var DIAS = 30;
+    function guarda(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    function le(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function id(prefixo) { return prefixo + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10); }
+    function cookie(n) { var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; }
+
+    // Macro que o Meta não resolveu ({{ad.id}} cru, comum em clique pela Biblioteca de Anúncios) não vale.
+    function limpo(k, v) {
+      v = (v || '').trim();
+      if (!v || /\{\{|\}\}|%7B%7B/i.test(v)) return '';
+      if (/_id$/.test(k) && !/^\d{3,30}$/.test(v)) return '';
+      return v.slice(0, k === 'fbclid' ? 500 : 300);
+    }
+
+    // Último clique de anúncio vence; visita sem parâmetro mantém a origem guardada.
+    var url = new URLSearchParams(location.search), nova = {}, temNova = false;
+    CHAVES.forEach(function (k) { var v = limpo(k, url.get(k)); if (v) { nova[k] = v; temNova = true; } });
+    var origem = {};
+    try {
+      var salva = JSON.parse(le('asfit_origem') || 'null');
+      if (salva && Date.now() - salva.t < DIAS * 864e5) origem = salva.o || {};
+    } catch (e) {}
+    if (temNova) {
+      origem = nova;
+      if (nova.fbclid) origem.fbc = 'fb.1.' + Date.now() + '.' + nova.fbclid;
+      guarda('asfit_origem', JSON.stringify({ t: Date.now(), o: origem }));
+    }
+    var visitante = le('asfit_visitante');
+    if (!visitante) { visitante = id('v'); guarda('asfit_visitante', visitante); }
+    var teste = url.get('teste_meta') || '';
+
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', PIXEL, { external_id: visitante });
+
+    function fbc() { return cookie('_fbc') || origem.fbc || ''; }
+
+    // Manda pro servidor. keepalive: segue mesmo se a página já estiver indo pro grupo.
+    function servidor(nome, eventId, extra) {
+      var corpo = { event_name: nome, event_id: eventId, event_source_url: location.href, visitante: visitante, fbc: fbc(), fbp: cookie('_fbp') };
+      if (teste) corpo.test_event_code = teste;
+      for (var k in extra) corpo[k] = extra[k];
+      try {
+        return fetch('/api/meta', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo), keepalive: true }).catch(function () {});
+      } catch (e) { return Promise.resolve(); }
+    }
+
+    var pv = id('pv');
+    fbq('track', 'PageView', {}, { eventID: pv });
+    // Espera o Pixel criar o cookie _fbp antes de mandar o PageView do servidor.
+    setTimeout(function () { servidor('PageView', pv, {}); }, 1500);
+
+    window.asfitMeta = {
+      origem: origem,
+      // Lead: dispara no Pixel e no servidor e devolve o event_id, que vai gravado no cadastro.
+      lead: function (dados) {
+        var eventId = id('lead');
+        try { fbq('track', 'Lead', { content_name: 'Grupo de Espera Asfit' }, { eventID: eventId }); } catch (e) {}
+        servidor('Lead', eventId, { email: dados.email, whatsapp: dados.whatsapp, nome: dados.nome });
+        return { evento_id: eventId, fbc: fbc(), fbp: cookie('_fbp') };
+      }
+    };
+  })();
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1142202521589184&ev=PageView&noscript=1"></noscript>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grupo de Espera · Asfit</title>
 <meta name="description" content="O lançamento da Asfit é dia 11/11, na live oficial. Entre no Grupo de Espera e receba o link das inscrições antes de todo mundo.">
@@ -713,10 +787,10 @@
     var botao = form.querySelector('button[type="submit"]');
     var TEXTO_BOTAO = botao.textContent;
 
-    // UTMs do anúncio vão junto com o cadastro
-    var params = new URLSearchParams(location.search);
+    // UTMs e dados do anúncio vão junto com o cadastro (guardados no <head>, valem 30 dias no navegador)
+    var origem = (window.asfitMeta && window.asfitMeta.origem) || {};
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
-      if (params.get(k)) form.elements[k].value = params.get(k);
+      if (origem[k]) form.elements[k].value = origem[k];
     });
 
     // País do WhatsApp. Brasil grava só DDD + número, como sempre; os outros gravam +DDI + número (o painel não põe o 55 neles).
@@ -838,6 +912,16 @@
         if (form.elements[k].value) lead[k] = form.elements[k].value.slice(0, 200);
       });
       if (document.referrer) lead.referrer = document.referrer.slice(0, 500);
+      [['ad_id', 'ad_id'], ['adset_id', 'adset_id'], ['campaign_id', 'campaign_id'], ['ad_name', 'ad_name'], ['adset_name', 'adset_name'],
+       ['campaign_name', 'campaign_name'], ['placement', 'placement'], ['site_source_name', 'site_source'], ['fbclid', 'fbclid']].forEach(function (par) {
+        if (origem[par[0]]) lead[par[1]] = origem[par[0]];
+      });
+      if (window.asfitMeta) {
+        var meta = window.asfitMeta.lead({ email: lead.email, whatsapp: lead.whatsapp, nome: lead.nome });
+        lead.evento_id = meta.evento_id;
+        if (meta.fbc) lead.fbc = meta.fbc.slice(0, 600);
+        if (meta.fbp) lead.fbp = meta.fbp.slice(0, 200);
+      }
       // Só segue depois que o banco responde (ou em 3 s, o que vier primeiro): se falhar, a pessoa entra no grupo do mesmo jeito.
       try {
         fetch('https://ewnsttmmbcdzchzpxqjb.supabase.co/rest/v1/agatha_leads', {

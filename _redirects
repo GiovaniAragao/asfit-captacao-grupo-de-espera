@@ -3,3 +3,7 @@
 /stories     /?utm_source=instagram&utm_medium=organico&utm_campaign=stories     302
 /dm          /?utm_source=instagram&utm_medium=organico&utm_campaign=dm          302
 /comentario  /?utm_source=instagram&utm_medium=organico&utm_campaign=comentario  302
+
+# O código da função não precisa ficar público
+/netlify/*    /404.html    404!
+/netlify.toml /404.html    404!

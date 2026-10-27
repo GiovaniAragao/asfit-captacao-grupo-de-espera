@@ -1,0 +1,7 @@
+# Deploy manual pela CLI (o site não está ligado ao GitHub):
+#   npx -y netlify-cli deploy --prod --dir . --site 14e57cdd-9043-4403-b1e3-c1b11750685b
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
